@@ -133,7 +133,7 @@ class RestaurantController {
           ],
       },
     ];
-
+    
     try {
       await Restaurant.bulkCreate(restaurants);
       res.status(200).json({ message: restaurants });
