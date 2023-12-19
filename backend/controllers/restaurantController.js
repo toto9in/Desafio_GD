@@ -1,19 +1,63 @@
 import Restaurant from "../models/restaurantModel.js";
+import Op from "sequelize";
+
+//https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
+
+//use Op with or
+
+const restaurantsFilter = (restaurants, query) => {
+  // Converte o termo de busca para minúsculas para tornar a busca case-insensitive
+  query = query.toLowerCase();
+  // Filtra a lista de restaurants com base no termo de busca
+  const filteredRestaurants = restaurants.filter(restaurant => {
+    // Verifica se o termo de busca está presente em algum lugar do restaurant
+    return (
+      restaurant.name.toLowerCase().includes(query) ||
+      restaurant.description.toLowerCase().includes(query) ||
+      restaurant.address.toLowerCase().includes(query) ||
+      restaurant.dishes.some(dish =>
+        dish.name.toLowerCase().includes(query) ||
+        dish.description.toLowerCase().includes(query)
+      ) ||
+      restaurant.drinks.some(drink =>
+        drink.name.toLowerCase().includes(query) ||
+        drink.description.toLowerCase().includes(query)
+      )
+    );
+  });
+
+  return filteredRestaurants;
+}
 
 class RestaurantController {
   static async getAllRestaurants(req, res) {
-    try {
-      const restaurants = await Restaurant.findAll();
-      res.status(200).json(restaurants);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+    const { query } = req.query;
+
+    if (query) {
+      try {
+        const restaurants = await Restaurant.findAll();
+
+      
+        res.status(200).json(restaurantsFilter(restaurants, query));
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    } else {
+      try {
+        const restaurants = await Restaurant.findAll();
+
+        console.log(restaurants.toJSON());
+        res.status(200).json(restaurants);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
     }
   }
 
   static async populateDatabase(req, res) {
     const restaurants = [
       {
-        name: "Restaurante sem futuro",
+        name: "restaurant sem futuro",
         description: "Comida brasileira",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 123",
@@ -38,22 +82,22 @@ class RestaurantController {
           {
             name: "Água",
             description: "Água mineral",
-            price: 2.50,
+            price: 2.5,
           },
           {
             name: "Coca Cola",
             description: "Refrigerante Coca Cola",
-            price: 4.50,
+            price: 4.5,
           },
           {
             name: "Mineiro",
             description: "Refrigerante de guaraná",
-            price: 4.50,
+            price: 4.5,
           },
         ],
       },
       {
-        name: "Restaurante Mario Bros",
+        name: "restaurant Mario Bros",
         description: "Comida italiana",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 124",
@@ -61,39 +105,39 @@ class RestaurantController {
           {
             name: "Pizza",
             description: "Mussarela, tomate, manjericão",
-            price: 70.00,
+            price: 70.0,
           },
           {
             name: "Macarrão",
             description: "Massa, molho vermelho, almôndegas",
-            price: 26.00,
+            price: 26.0,
           },
           {
             name: "Lasanha",
             description: "Camadas de massa, molho bolonhesa, queijo",
-            price: 35.00,
+            price: 35.0,
           },
         ],
         drinks: [
           {
             name: "Água",
             description: "Água mineral",
-            price: 2.50,
+            price: 2.5,
           },
           {
             name: "Coca Cola",
             description: "Refrigerante Coca Cola",
-            price: 4.50,
+            price: 4.5,
           },
           {
             name: "Mineiro",
             description: "Refrigerante de guaraná",
-            price: 4.50,
+            price: 4.5,
           },
         ],
       },
       {
-        name: "Restaurante Japonês",
+        name: "restaurant Japonês",
         description: "Comida japonesa",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 125",
@@ -101,39 +145,39 @@ class RestaurantController {
           {
             name: "Sushi Misto",
             description: "Barca de sushi variado",
-            price: 80.00,
+            price: 80.0,
           },
           {
             name: "Yakisoba",
             description: "Macarrão, legumes, carne, frango",
-            price: 20.50,
+            price: 20.5,
           },
           {
             name: "Temaki",
             description: "Sushi enrolado em algas",
-            price: 25.00,
+            price: 25.0,
           },
         ],
         drinks: [
-            {
-              name: "Água",
-              description: "Água mineral",
-              price: 2.50,
-            },
-            {
-              name: "Coca Cola",
-              description: "Refrigerante Coca Cola",
-              price: 4.50,
-            },
-            {
-              name: "Mineiro",
-              description: "Refrigerante de guaraná",
-              price: 4.50,
-            },
-          ],
+          {
+            name: "Água",
+            description: "Água mineral",
+            price: 2.5,
+          },
+          {
+            name: "Coca Cola",
+            description: "Refrigerante Coca Cola",
+            price: 4.5,
+          },
+          {
+            name: "Mineiro",
+            description: "Refrigerante de guaraná",
+            price: 4.5,
+          },
+        ],
       },
     ];
-    
+
     try {
       await Restaurant.bulkCreate(restaurants);
       res.status(200).json({ message: restaurants });
@@ -141,7 +185,6 @@ class RestaurantController {
       res.status(500).json({ message: error.message });
     }
   }
-
 }
 
 export default RestaurantController;
