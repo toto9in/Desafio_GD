@@ -1,20 +1,81 @@
 import { useState } from "react";
 import { Background } from "../assets";
-import { LoginInput } from "../components/LoginInput";
 import { motion } from "framer-motion";
 import { buttonClick } from "../animations";
 import { useForm } from "react-hook-form";
+import { fadeInOut } from "../animations";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import * as yup from "yup";
+
+export const LoginInput = ({ register, name, placeHolder, type }) => {
+  const [isFocus, setIsFocus] = useState(false);
+  return (
+    <motion.div
+      {...fadeInOut}
+      className={`box-border flex items-center justify-center gap-4 bg-gray-200 backdrop-blur-md rounded-md w-full px-4 py-4 ${
+        isFocus ? "border-b-2 border-red-600" : "border-b-0"
+      }`}
+    >
+      <input
+        {...register(name)}
+        type={type}
+        placeholder={placeHolder}
+        className="w-full h-full bg-transparent text-gray-800 text-lg font-semibold border-none outline-none"
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+      />
+    </motion.div>
+  );
+};
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
-  const [password, setPassword] = useState("");
-  const [confirm_password, setConfirmPassword] = useState("");
-  const [userName, setUserName] = useState("");
 
-  const { register, handleSubmit, watch, errors } = useForm();
+  const {isSuccess, isError, data, error, mutate, isPending} = useMutation()
 
-  const onSubmit = (data) => console.log("ue"); 
+  const schema = isSignUp
+    ? yup.object().shape({
+        email: yup.string().email().required("Digite um email válido"),
+        password: yup.string().required("Digite uma senha"),
+        fullName: yup.string().required("Digite o seu nome"),
+        confirm_password: yup
+          .string()
+          .oneOf([yup.ref("password"), null], "As senhas não sao iguais")
+          .required("Confirme a sua senha"),
+      })
+    : yup.object().shape({
+        email: yup.string().email().required("Digite um email válido"),
+        password: yup.string().required("Digite uma senha"),
+      });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const handleSignUpClick = () => {
+    setIsSignUp(true);
+    reset();
+  };
+
+  const handleSignInClick = () => {
+    setIsSignUp(false);
+    reset();
+  };
+
+  const sendLoginCredentials = (data) => {
+
+  }
+
+  const onSubmit = (data) => {
+    console.log(data);
+    console.log(errors.fullName?.message);
+  };
 
   return (
     <div className=" w-screen h-screen relative overflow-hidden flex">
@@ -36,53 +97,61 @@ export const Login = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className=" w-full flex flex-col items-center justify-center gap-6 px-3 md:px-8 py-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" w-full flex flex-col items-center justify-center gap-6 px-3 md:px-8 py-8"
+        >
           {isSignUp && (
-            <LoginInput
-              placeHolder={"Nome"}
-              inputState={userName}
-              inputStateFunc={setUserName}
-              type="text"
-              isSignUp={isSignUp}
-              {...register("name")}
-            />
+            <>
+              {isSubmitted && errors.fullName && (
+                <p>{errors.fullName.message}</p>
+              )}
+              <LoginInput
+                register={register}
+                name="fullName"
+                placeHolder="Nome"
+                type="text"
+              />
+            </>
           )}
 
+{isSubmitted && errors.email && <p>{errors.email.message}</p>}
           <LoginInput
-            placeHolder={"Email"}
-            inputState={email}
-            inputStateFunc={setEmail}
+            register={register}
+            name="email"
+            placeHolder="Email"
             type="email"
-            isSignUp={isSignUp}
-            {...register("email")}
           />
+
+{isSubmitted && errors.password && <p>{errors.password.message}</p>}
           <LoginInput
-            placeHolder={"Senha"}
-            inputState={password}
-            inputStateFunc={setPassword}
+            register={register}
+            name="password"
+            placeHolder="Senha"
             type="password"
-            isSignUp={isSignUp}
-            {...register("password")}
           />
 
           {isSignUp && (
-            <LoginInput
-              placeHolder={"Confirmar senha"}
-              inputState={confirm_password}
-              inputStateFunc={setConfirmPassword}
-              type="password"
-              isSignUp={isSignUp}
-              {...register("confirm_password")}
-            />
+            <>
+                {isSubmitted && errors.confirm_password && (
+                  <p>{errors.confirm_password.message}</p>
+                )}
+              <LoginInput
+                register={register}
+                name="confirm_password"
+                placeHolder="Confirmar senha"
+                type="password"
+              />
+            </>
           )}
-
           {!isSignUp ? (
             <p className=" text-lg">
               Não tem uma conta?{" "}
               <motion.button
+                type="button"
                 {...buttonClick}
                 className=" text-red-600 cursor-pointer font-bold"
-                onClick={() => setIsSignUp(true)}
+                onClick={handleSignUpClick}
               >
                 Cadastre-se
               </motion.button>{" "}
@@ -91,16 +160,18 @@ export const Login = () => {
             <p className=" text-lg">
               Já tem uma conta?{" "}
               <motion.button
+                type="button"
                 {...buttonClick}
                 className=" text-red-600 cursor-pointer font-bold"
-                onClick={() => setIsSignUp(false)}
+                onClick={handleSignInClick}
               >
                 Entrar
               </motion.button>{" "}
             </p>
           )}
 
-          <motion.button type="submit"
+          <motion.button
+            type="submit"
             {...buttonClick}
             className=" w-full px-4 py-4 rounded-md bg-red-600 cursor-pointer text-white text-2xl capitalize hover:bg-red-700 font-bold"
           >
