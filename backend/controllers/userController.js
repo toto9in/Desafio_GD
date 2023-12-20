@@ -5,13 +5,14 @@ import jwt from "jsonwebtoken";
 //based on https://www.youtube.com/watch?v=VWEJ-GhjU4U
 class UserController {
   static async signup(req, res) {
-    const { userName, email, password } = req.body;
+    const { userName, email, password, confirm_password} = req.body;
 
     try {
       const userAlreadyExists = await User.findOne({ where: { email } });
       if (userAlreadyExists)
         return res.status(400).json({ message: "Email already exists" });
 
+      if (password !== confirm_password) return res.status(400).json({message: "Password does not match!"})
       // Encrypt password
       const encryptedPassword = await passwordBcrypt.encryptPassword(password);
 
