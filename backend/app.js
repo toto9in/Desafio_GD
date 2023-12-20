@@ -21,8 +21,10 @@ app.use(express.json());
 
 
 //routes
+
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/users', userRouter);
+app.get('*', function(req, res) { res.status(404).send('Not Found');})
 
 
 

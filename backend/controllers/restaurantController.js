@@ -1,9 +1,8 @@
 import Restaurant from "../models/restaurantModel.js";
-import Op from "sequelize";
+
 
 //https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
-
-//use Op with or
+//nao deu certo era melhor usar os metodos do js para percorrer os objetos e filtrar
 
 const restaurantsFilter = (restaurants, query) => {
   // Converte o termo de busca para minúsculas para tornar a busca case-insensitive
