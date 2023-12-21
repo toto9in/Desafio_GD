@@ -4,6 +4,12 @@ export const buttonClick = {
   },
 };
 
+export const hover = {
+  whileHover: {
+    scale: 1.05,
+  },
+};
+
 export const fadeInOut = {
   initial: {
     opacity: 0,

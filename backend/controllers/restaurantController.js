@@ -45,7 +45,6 @@ class RestaurantController {
       try {
         const restaurants = await Restaurant.findAll();
 
-        console.log(restaurants.toJSON());
         res.status(200).json(restaurants);
       } catch (error) {
         res.status(500).json({ message: error.message });

@@ -34,10 +34,11 @@ class UserController {
   static async login(req, res) {
     const { email, password } = req.body;
 
+
     const userWithEmail = await User.findOne({ where: { email } });
     if (!userWithEmail)
       return res
-        .status(400)
+        .status(401)
         .json({ message: "Email or password does not match" });
 
     //check if password matches
@@ -47,7 +48,7 @@ class UserController {
     );
     if (!passwordMatches)
       return res
-        .status(400)
+        .status(401)
         .json({ message: "Email or password does not match" });
 
     const jwtToken = jwt.sign(

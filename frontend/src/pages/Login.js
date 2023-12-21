@@ -5,8 +5,9 @@ import { buttonClick } from "../animations";
 import { useForm } from "react-hook-form";
 import { fadeInOut } from "../animations";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import apiClient from "../api/http-common"
 
 export const LoginInput = ({ register, name, placeHolder, type }) => {
   const [isFocus, setIsFocus] = useState(false);
@@ -29,10 +30,23 @@ export const LoginInput = ({ register, name, placeHolder, type }) => {
   );
 };
 
+const sendLoginCredentials = async (data) => {
+
+  try {
+    const response = await apiClient.post("/users/login", data)
+    if(response.status === 200) {
+      return response
+    }    
+  } catch (error) {
+    if (error.response.status === 401) {
+      alert("Email ou senha incorretos")
+    }
+  }
+  
+}
+
 export const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-
-  const {isSuccess, isError, data, error, mutate, isPending} = useMutation()
 
   const schema = isSignUp
     ? yup.object().shape({
@@ -68,13 +82,18 @@ export const Login = () => {
     reset();
   };
 
-  const sendLoginCredentials = (data) => {
+  const navigate = useNavigate();
 
-  }
-
-  const onSubmit = (data) => {
-    console.log(data);
-    console.log(errors.fullName?.message);
+  //use useNavigate hook from react-router-dom
+  //https://stackoverflow.com/questions/62861269/attempted-import-error-usehistory-is-not-exported-from-react-router-dom
+  const onSubmit = async (data) => {
+    try {
+      const response = await sendLoginCredentials(data)
+        localStorage.setItem("token", response.data.token)
+        navigate("/main")
+    } catch (error) {
+      
+    }
   };
 
   return (
