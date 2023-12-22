@@ -1,13 +1,17 @@
 import apiClient from "../api/http-common";
 import { Header } from "../components/header";
-import { HorizontalCard } from "../components/restaurantCard";
-import React, { useState, useEffect } from "react";
-import { Input } from "@material-tailwind/react";
-import { motion } from "framer-motion";
+import { RestaurantCard } from "../components/restaurantCard";
+import React, { useState, useEffect, } from "react";
+
+//https://react.dev/reference/react/useContext#passing-data-deeply-into-the-tree
+
+
 
 export const Main = () => {
   const [query, setQuery] = useState("");
   const [restaurants, setRestaurants] = useState([]);
+
+  
 
   const receiveRestaurants = async () => {
     const actualToken = localStorage.getItem("token");
@@ -21,7 +25,6 @@ export const Main = () => {
       });
       console.log(response.data);
       setRestaurants(response.data);
-    
     } catch (error) {
       console.log(error);
     }
@@ -40,28 +43,27 @@ export const Main = () => {
           onChange={(e) => setQuery(e.target.value)}
           className="w-full h-full bg-transparent text-gray-800 text-lg font-semibold border-none outline-none pl-3 pr-10"
         />
-        <motion.button>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-800"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </motion.button>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
       </div>
 
       <div className="flex-grow">
         {restaurants.map((restaurant, index) => (
           <div className="p-6 justify-center" key={index}>
-            <HorizontalCard restaurant={restaurant} />
+            <RestaurantCard restaurant={restaurant} />
           </div>
         ))}
       </div>
