@@ -53,6 +53,8 @@ class RestaurantController {
   }
 
   static async populateDatabase(req, res) {
+    const imagesURL = "http://localhost:8000/images/"
+
     const restaurants = [
       {
         name: "restaurant sem futuro",
@@ -64,16 +66,19 @@ class RestaurantController {
             name: "Strogonoff",
             description: "Carne, arroz, batata frita",
             price: 21.21,
+            image: imagesURL + "Strogonoff.jpg"
           },
           {
             name: "Bife à Cavalo",
             description: "Bife, ovo, arroz",
             price: 25.5,
+            image: imagesURL + "Bife.jpeg"
           },
           {
             name: "Feijoada",
             description: "Feijão preto, carne de porco, arroz",
             price: 30.0,
+            image: imagesURL + "Feijoada.jpg"
           },
         ],
         drinks: [
@@ -81,16 +86,19 @@ class RestaurantController {
             name: "Água",
             description: "Água mineral",
             price: 2.5,
+            image: imagesURL + "agua.jpg"
           },
           {
             name: "Coca Cola",
             description: "Refrigerante Coca Cola",
             price: 4.5,
+            image: imagesURL + "coca-cola.jpg"
           },
           {
             name: "Mineiro",
             description: "Refrigerante de guaraná",
             price: 4.5,
+            image: imagesURL + "Mineiro.jpeg"
           },
         ],
       },
@@ -104,16 +112,19 @@ class RestaurantController {
             name: "Pizza",
             description: "Mussarela, tomate, manjericão",
             price: 70.0,
+            image: imagesURL + "Pizza.jpg"
           },
           {
             name: "Macarrão",
             description: "Massa, molho vermelho, almôndegas",
             price: 26.0,
+            image: imagesURL + "Macarrao.png"
           },
           {
             name: "Lasanha",
             description: "Camadas de massa, molho bolonhesa, queijo",
             price: 35.0,
+            image: imagesURL + "Lasanha.jpg"
           },
         ],
         drinks: [
@@ -121,16 +132,19 @@ class RestaurantController {
             name: "Água",
             description: "Água mineral",
             price: 2.5,
+            image: imagesURL + "agua.jpg"
           },
           {
             name: "Coca Cola",
             description: "Refrigerante Coca Cola",
             price: 4.5,
+            image: imagesURL + "coca-cola.jpg"
           },
           {
             name: "Mineiro",
             description: "Refrigerante de guaraná",
             price: 4.5,
+            image: imagesURL + "Mineiro.jpeg"
           },
         ],
       },
@@ -144,16 +158,19 @@ class RestaurantController {
             name: "Sushi Misto",
             description: "Barca de sushi variado",
             price: 80.0,
+            image: imagesURL + "Sushi.jpg"
           },
           {
             name: "Yakisoba",
             description: "Macarrão, legumes, carne, frango",
             price: 20.5,
+            image: imagesURL + "Yakisoba.jpg"
           },
           {
             name: "Temaki",
             description: "Sushi enrolado em algas",
             price: 25.0,
+            image: imagesURL + "Temaki.jpg"
           },
         ],
         drinks: [
@@ -161,16 +178,19 @@ class RestaurantController {
             name: "Água",
             description: "Água mineral",
             price: 2.5,
+            image: imagesURL + "agua.jpg"
           },
           {
             name: "Coca Cola",
             description: "Refrigerante Coca Cola",
             price: 4.5,
+            image: imagesURL + "coca-cola.jpg"
           },
           {
             name: "Mineiro",
             description: "Refrigerante de guaraná",
             price: 4.5,
+            image: imagesURL + "Mineiro.jpeg"
           },
         ],
       },

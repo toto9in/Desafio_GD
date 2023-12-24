@@ -24,17 +24,17 @@ const isInactiveStyle =
             </NavLink>
             <NavLink
               className={({ isActive }) =>
-                isActive ? isActiveStyle : isInactiveStyle
+                isActive ? isInactiveStyle : isInactiveStyle
               }
-              to={"/sla"}
+            
             >
               Pedidos
             </NavLink>
             <NavLink
               className={({ isActive }) =>
-                isActive ? isActiveStyle : isInactiveStyle
+                isActive ? isInactiveStyle: isInactiveStyle
               }
-              to={"/perfil"}
+              to={"/profile"}
             >
               Perfil
             </NavLink>

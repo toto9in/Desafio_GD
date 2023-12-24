@@ -1,17 +1,14 @@
 import apiClient from "../api/http-common";
+import { Footer } from "../components/Footer";
 import { Header } from "../components/header";
 import { RestaurantCard } from "../components/restaurantCard";
-import React, { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 
 //https://react.dev/reference/react/useContext#passing-data-deeply-into-the-tree
-
-
 
 export const Main = () => {
   const [query, setQuery] = useState("");
   const [restaurants, setRestaurants] = useState([]);
-
-  
 
   const receiveRestaurants = async () => {
     const actualToken = localStorage.getItem("token");
@@ -23,7 +20,6 @@ export const Main = () => {
       const response = await apiClient.get(`/restaurants?query=${query}`, {
         headers,
       });
-      console.log(response.data);
       setRestaurants(response.data);
     } catch (error) {
       console.log(error);
@@ -40,6 +36,7 @@ export const Main = () => {
 
       <div className="max-w-[32rem] shadow-lg box-border flex items-center justify-center gap-4 bg-white backdrop-blur-md rounded-md w-full px-4 py-4">
         <input
+          placeholder="Pesquisar"
           onChange={(e) => setQuery(e.target.value)}
           className="w-full h-full bg-transparent text-gray-800 text-lg font-semibold border-none outline-none pl-3 pr-10"
         />
@@ -66,6 +63,10 @@ export const Main = () => {
             <RestaurantCard restaurant={restaurant} />
           </div>
         ))}
+      </div>
+
+      <div className="flex justify-center mt-10">
+        <Footer />
       </div>
     </div>
   );

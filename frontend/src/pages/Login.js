@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import apiClient from "../api/http-common"
+import { useUser } from "../context/UserContext";
 
 export const LoginInput = ({ register, name, placeHolder, type }) => {
   const [isFocus, setIsFocus] = useState(false);
@@ -45,7 +46,21 @@ const sendLoginCredentials = async (data) => {
   
 }
 
+const sendSignUpCredentials = async (data) => {
+  try {
+    const response = await apiClient.post("/users/signup", data)
+    if(response.status === 201) {
+      return response
+    }
+    
+  } catch (error) {
+    
+  }
+}
+
 export const Login = () => {
+  const { setUser } = useUser()
+  const { setToken } = useUser()
   const [isSignUp, setIsSignUp] = useState(false);
 
   const schema = isSignUp
@@ -87,13 +102,33 @@ export const Login = () => {
   //use useNavigate hook from react-router-dom
   //https://stackoverflow.com/questions/62861269/attempted-import-error-usehistory-is-not-exported-from-react-router-dom
   const onSubmit = async (data) => {
-    try {
-      const response = await sendLoginCredentials(data)
+    if (isSignUp) {
+      try {
+        console.log(data)
+        const response = await sendSignUpCredentials(data)
+        if(response.status === 201) {
+          setIsSignUp(false)
+          reset()
+          alert("Usuário cadastrado com sucesso")
+        }
+      } catch (error) {
+        
+      }
+    } else {
+      try {
+        const response = await sendLoginCredentials(data)
+        console.log(response)
         localStorage.setItem("token", response.data.token)
+        localStorage.setItem("user", JSON.stringify(response.data.user))
+        setUser(response.data.user)
+        setToken(response.data.token)
         navigate("/main")
-    } catch (error) {
-      
+      } catch (error) {
+        
+      }
     }
+
+    
   };
 
   return (

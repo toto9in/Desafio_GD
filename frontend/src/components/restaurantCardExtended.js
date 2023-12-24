@@ -5,10 +5,11 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
-import { buttonClick, hover } from "../animations";
+
 import { useNavigate } from "react-router-dom";
 
 export function RestaurantCardExtended({ restaurant }) {
+
   const navigate = useNavigate();
 
   const handleRestaurantClick = () => {

@@ -57,4 +57,5 @@ const Restaurant = db.define("Restaurant", {
 
 });
 
+
 export default Restaurant;

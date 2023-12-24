@@ -5,8 +5,9 @@ import jwt from "jsonwebtoken";
 //based on https://www.youtube.com/watch?v=VWEJ-GhjU4U
 class UserController {
   static async signup(req, res) {
-    const { userName, email, password, confirm_password} = req.body;
-
+    const { fullName , email, password, confirm_password } = req.body;
+    const userName = fullName
+    
     try {
       const userAlreadyExists = await User.findOne({ where: { email } });
       if (userAlreadyExists)
@@ -56,7 +57,7 @@ class UserController {
       process.env.secretKey
     );
 
-    res.status(200).json({ message: "User logged", token: jwtToken });
+    res.status(200).json({ message: "User logged", user: { name: userWithEmail.userName, email: userWithEmail.email } ,token: jwtToken });
   }
 
   static async example(req, res) {

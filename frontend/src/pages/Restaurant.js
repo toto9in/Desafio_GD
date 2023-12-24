@@ -1,15 +1,17 @@
 import { Header } from "../components/header";
-import { BookingCard } from "../components/teste";
+import { CardItem } from "../components/CardItem";
 import { RestaurantCardExtended } from "../components/restaurantCardExtended";
 import { useRestaurant } from "../context/RestaurantContext";
 import { Typography } from "@material-tailwind/react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
-// https://reactjsexample.com/a-lightweight-production-ready-carousel-for-react/
+import { Footer } from "../components/Footer";
 
 export const Restaurant = () => {
   const { selectedRestaurant } = useRestaurant();
+
+  const dishes = selectedRestaurant?.dishes || [];
+  const drinks = selectedRestaurant?.drinks || [];
 
   const responsive = {
     desktop: {
@@ -44,18 +46,11 @@ export const Restaurant = () => {
           containerClass="w-full"
           responsive={responsive}
         >
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
+          {dishes.map((dish, index) => (
+            <div className="flex justify-center" key={index}>
+              <CardItem item={dish} />
+            </div>
+          ))}
         </Carousel>
       </div>
 
@@ -67,23 +62,23 @@ export const Restaurant = () => {
 
       <div className="flex justify-center mx-60">
         <Carousel
+          
           infinite={true}
           containerClass="w-full"
           responsive={responsive}
         >
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
-          <div className="flex justify-center">
-            <BookingCard />
-          </div>
+          {drinks.map((drink, index) => (
+            <div className="flex justify-center" key={index}>
+              <CardItem item={drink} />
+            </div>
+          ))}
         </Carousel>
+      </div>
+      
+      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10">
+        <Footer />
+      </div>
       </div>
     </div>
   );

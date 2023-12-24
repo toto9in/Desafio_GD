@@ -5,7 +5,7 @@ import passport from 'passport';
 
 const router = express.Router();
 
-router.get('/', passport.authenticate("jwt", { session: false}), RestaurantController.getAllRestaurants);
+router.get('/', passport.authenticate("jwt", { session: false }), RestaurantController.getAllRestaurants);
 router.get('/populate', RestaurantController.populateDatabase);
 
 export default router;
