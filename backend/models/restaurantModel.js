@@ -18,6 +18,10 @@ const Restaurant = db.define("Restaurant", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   dishes: {
     type: DataTypes.ARRAY(
       DataTypes.JSON({

@@ -57,10 +57,11 @@ class RestaurantController {
 
     const restaurants = [
       {
-        name: "restaurant sem futuro",
+        name: "Restaurante sem futuro",
         description: "Comida brasileira",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 123",
+        image: imagesURL + "brasileiro.png",
         dishes: [
           {
             name: "Strogonoff",
@@ -86,7 +87,7 @@ class RestaurantController {
             name: "Água",
             description: "Água mineral",
             price: 2.5,
-            image: imagesURL + "agua.jpg"
+            image: imagesURL + "agua.jpg",
           },
           {
             name: "Coca Cola",
@@ -107,6 +108,7 @@ class RestaurantController {
         description: "Comida italiana",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 124",
+        image: imagesURL + "mario.png",
         dishes: [
           {
             name: "Pizza",
@@ -153,6 +155,7 @@ class RestaurantController {
         description: "Comida japonesa",
         phone: "34 123456789",
         address: "Av Leopoldino de Oliveira, 125",
+        image: imagesURL + "japones.jpg",
         dishes: [
           {
             name: "Sushi Misto",
